@@ -1,12 +1,12 @@
 .app {
-    font-family: sans-serif;
+    font-family: "Segoe UI";
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     gap: 20px;
     height: 100vh;
-    font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+    font-family: "Segoe UI";
     background-color: #f8f9fd;
 }
 
@@ -20,14 +20,14 @@ input[type="submit"] {
     margin-top: 10px;
     cursor: pointer;
     font-size: 15px;
-    background: #01d28e;
-    border: 1px solid #01d28e;
+    background: #036ead;
+    border: 1px solid #036ead;
     color: #fff;
     padding: 10px 20px;
 }
 
 input[type="submit"]:hover {
-    background: #6cf0c2;
+    background: #0044be;
 }
 
 .button-container {
