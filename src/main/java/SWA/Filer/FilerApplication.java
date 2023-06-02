@@ -6,15 +6,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
-@RestController
+//@RestController
 public class FilerApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(FilerApplication.class, args);
 	}
-	@GetMapping("/")
+/*	@GetMapping("/")
 	public String hello(){
 			return "Hello World";
 	}
-	/*test_git_functionalities*/
+	*//*test_git_functionalities*/
 }
