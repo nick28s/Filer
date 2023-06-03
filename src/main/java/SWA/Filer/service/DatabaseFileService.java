@@ -38,12 +38,14 @@ public class DatabaseFileService {
                 .orElseThrow(() -> new FileNotFoundException("File not found with id " + fileId));
     }
 
-    public void updateFile(DatabaseFile databaseFile) {
+    /*public void updateFile(DatabaseFile databaseFile) {
         dbFileRepository.save(databaseFile);
-    }
+    }*/
 
     public void renameFile(DatabaseFile databaseFile, String newFileName) {
+        // Used to rename the file
         databaseFile.setFileName(newFileName);
+        // Used to save the updated file information in the database
         dbFileRepository.save(databaseFile);
     }
 }
