@@ -6,7 +6,7 @@ const path = require('path');
 const connection = mysql.createConnection({
 	host     : 'localhost',
 	user     : 'root',
-	password : '123456789',
+	password : '1234',
 	database : 'filer'
 });
 
@@ -69,4 +69,4 @@ app.get('/home', function(request, response) {
 	response.end();
 });
 
-app.listen(3000);
+app.listen(3030);
