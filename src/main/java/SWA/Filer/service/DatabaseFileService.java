@@ -48,4 +48,10 @@ public class DatabaseFileService {
         // Used to save the updated file information in the database
         dbFileRepository.save(databaseFile);
     }
+
+    public void deleteFile(DatabaseFile databaseFile) {
+        // Perform the necessary operations to delete the file from the database
+        dbFileRepository.delete(databaseFile);
+    }
+
 }
