@@ -1,4 +1,4 @@
-package SWA.Filer.controller;
+package SWA.Filer.model;
 
 public class UserRequest {
     private String username;
@@ -30,4 +30,3 @@ public class UserRequest {
         this.password = password;
     }
 }
-

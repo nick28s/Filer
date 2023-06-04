@@ -1,10 +1,10 @@
 package SWA.Filer.controller;
 
-import SWA.Filer.controller.UserRequest;
+import SWA.Filer.model.UserRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.RestController;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -20,7 +20,7 @@ public class UserController {
 
         try {
             // Get the database connection
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_swa_db", "root", "1234");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/filer", "root", "1234");
 
             // Prepare the SQL query
             String sql = "INSERT INTO users (username, password) VALUES (?, ?)";
@@ -49,7 +49,7 @@ public class UserController {
 
         try {
             // Get the database connection
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_swa_db", "root", "1234");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/filer", "root", "1234");
 
             // Prepare the SQL query
             String sql = "UPDATE users SET username = ?, password = ? WHERE id = ?";
@@ -79,7 +79,7 @@ public class UserController {
 
         try {
             // Get the database connection
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_swa_db", "root", "1234");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/filer", "root", "1234");
 
             // Prepare the SQL query
             String sql = "DELETE FROM users WHERE id = ?";
@@ -100,4 +100,6 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while deleting the user: " + e.getMessage());
         }
     }
+
+
 }
