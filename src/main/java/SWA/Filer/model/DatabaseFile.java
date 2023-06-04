@@ -3,6 +3,11 @@ package SWA.Filer.model;
 import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import SWA.Filer.exception.FileStorageException;
+import SWA.Filer.service.DatabaseFileService;
 
 @Entity
 @Table(name = "files")
@@ -60,4 +65,8 @@ public class DatabaseFile {
     public void setData(byte[] data) {
         this.data = data;
     }
+
+
+
+
 }

@@ -19,17 +19,14 @@ public class DatabaseFileService {
     private DatabaseFileRepository dbFileRepository;
 
     public DatabaseFile storeFile(MultipartFile file) {
-        // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
         try {
-            // Check if the file's name contains invalid characters
-            if(fileName.contains("..")) {
+            if (fileName.contains("..")) {
                 throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
             }
 
             DatabaseFile dbFile = new DatabaseFile(fileName, file.getContentType(), file.getBytes());
-
             return dbFileRepository.save(dbFile);
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
@@ -40,4 +37,21 @@ public class DatabaseFileService {
         return dbFileRepository.findById(fileId)
                 .orElseThrow(() -> new FileNotFoundException("File not found with id " + fileId));
     }
+
+    /*public void updateFile(DatabaseFile databaseFile) {
+        dbFileRepository.save(databaseFile);
+    }*/
+
+    public void renameFile(DatabaseFile databaseFile, String newFileName) {
+        // Used to rename the file
+        databaseFile.setFileName(newFileName);
+        // Used to save the updated file information in the database
+        dbFileRepository.save(databaseFile);
+    }
+
+    public void deleteFile(DatabaseFile databaseFile) {
+        // Perform the necessary operations to delete the file from the database
+        dbFileRepository.delete(databaseFile);
+    }
+
 }
