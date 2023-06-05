@@ -1,10 +1,8 @@
 package SWA.Filer.controller;
 
-import SWA.Filer.model.DatabaseFile;
-import SWA.Filer.model.GroupModel;
-import SWA.Filer.model.GroupResponse;
-import SWA.Filer.model.GroupRequest;
+import SWA.Filer.model.*;
 
+import SWA.Filer.payload.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,39 +18,39 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+@RestController
+@RequestMapping("/files")
 public class FileListController {
-    @GetMapping("files/{userID}/listfiles")
-    public ResponseEntity<List<DatabaseFile>> getFiles(@PathVariable("userID") int id) {
+    @GetMapping("/{userID}/listfiles")
+    public ResponseEntity<List<FileResponse>> getFiles(@PathVariable("userID") int uid) {
         try {
             // Get the database connection
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/filer", "root", "1234");
 
             // Prepare the SQL query
-            String sql = "SELECT id, fileName, directoryID, userID FROM files WHERE userID = ?";
+            String sql = "SELECT id, fileName, fileType, directoryID,userID FROM files WHERE userID = ?";
 
-            // Create a statement and execute the query
+            // Create a prepared statement and set the parameters
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, id);
+            statement.setInt(1, uid);
 
-            // Execute the query
-            statement.executeUpdate();
-
-            ResultSet resultSet = statement.executeQuery(sql);
-
+            //execute the query
+            ResultSet resultSet = statement.executeQuery();
 
             // Create a list to store the files
-            List<DatabaseFile> databaseFiles = new ArrayList<>();
+            List<FileResponse> files = new ArrayList<>();
 
-            // Iterate over the result set and create Group objects
+            // Iterate over the result
             while (resultSet.next()) {
+                String id_ = resultSet.getString("id");
                 String fileName = resultSet.getString("fileName");
                 String fileType = resultSet.getString("fileType");
-                byte[] data = resultSet.getBytes("data");
                 int directoryID = resultSet.getInt("directoryID");
                 int userID = resultSet.getInt("userID");
 
-                DatabaseFile databaseFile = new DatabaseFile(fileName, fileType, data, directoryID, userID);
-                databaseFiles.add(databaseFile);
+
+                FileResponse file = new FileResponse(id_, fileName, fileType, directoryID, userID);
+                files.add(file);
             }
 
             // Clean up resources
@@ -61,7 +59,7 @@ public class FileListController {
             connection.close();
 
             // Return the list of groups
-            return ResponseEntity.ok(databaseFiles);
+            return ResponseEntity.ok(files);
         } catch (SQLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
