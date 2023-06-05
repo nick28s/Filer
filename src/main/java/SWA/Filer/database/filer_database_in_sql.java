@@ -30,6 +30,14 @@ public class filer_database_in_sql {
         `username` varchar(50) NOT NULL,
         `password` varchar(255) NOT NULL,
         PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3
+
+        CREATE TABLE `directories` (
+        `id` int NOT NULL AUTO_INCREMENT,
+        `name` varchar(255) NOT NULL,
+        PRIMARY KEY (`id`)
         ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3*/
+
+
 
 /**/
