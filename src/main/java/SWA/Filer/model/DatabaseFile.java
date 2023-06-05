@@ -24,14 +24,17 @@ public class DatabaseFile {
     @Lob
     private byte[] data;
 
+    private int directoryID = 0;
+
     public DatabaseFile() {
 
     }
 
-    public DatabaseFile(String fileName, String fileType, byte[] data) {
+    public DatabaseFile(String fileName, String fileType, byte[] data, int directoryID) {
         this.fileName = fileName;
         this.fileType = fileType;
         this.data = data;
+        this.directoryID = directoryID;
     }
 
     public String getId() {
@@ -64,6 +67,14 @@ public class DatabaseFile {
 
     public void setData(byte[] data) {
         this.data = data;
+    }
+
+    public void setDirectoryID(int directoryID) {
+        this.directoryID = directoryID;
+    }
+
+    public int getDirectoryID() {
+        return directoryID;
     }
 
 

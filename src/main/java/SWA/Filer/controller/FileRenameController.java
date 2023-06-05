@@ -21,6 +21,7 @@ public class FileRenameController {
 
         // Get the file record from the database using the file storage service
         DatabaseFile databaseFile = fileStorageService.getFile(id);
+        int directoryID = databaseFile.getDirectoryID();
 
         // If the file record is not found, it can be handled as an error
         if (databaseFile == null) {
@@ -37,6 +38,6 @@ public class FileRenameController {
                 .toUriString();
 
         // Return a response object containing the new file name, download URI, file type, and size
-        return new Response(newFileName, fileDownloadUri, databaseFile.getFileType(), databaseFile.getData().length);
+        return new Response(newFileName, fileDownloadUri, databaseFile.getFileType(), databaseFile.getData().length,directoryID);
     }
 }
