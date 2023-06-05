@@ -25,16 +25,18 @@ public class DatabaseFile {
     private byte[] data;
 
     private int directoryID = 0;
+    private int userID = 0;
 
     public DatabaseFile() {
 
     }
 
-    public DatabaseFile(String fileName, String fileType, byte[] data, int directoryID) {
+    public DatabaseFile(String fileName, String fileType, byte[] data, int directoryID, int userID) {
         this.fileName = fileName;
         this.fileType = fileType;
         this.data = data;
         this.directoryID = directoryID;
+        this.userID = userID;
     }
 
     public String getId() {
@@ -75,6 +77,14 @@ public class DatabaseFile {
 
     public int getDirectoryID() {
         return directoryID;
+    }
+
+    public void setUserID(int directoryID) {
+        this.directoryID = userID;
+    }
+
+    public int getUserID() {
+        return userID;
     }
 
 
