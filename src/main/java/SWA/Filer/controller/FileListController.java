@@ -21,6 +21,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/files")
 public class FileListController {
+    private static final String ADMIN_USERNAME = "admin";
+    private static final String ADMIN_PASSWORD = "admin1234";
     @GetMapping("/{userID}/listfiles")
     public ResponseEntity<List<FileResponse>> getFiles(@PathVariable("userID") int uid) {
         try {
@@ -64,4 +66,55 @@ public class FileListController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    @GetMapping("/listallfiles")
+    public ResponseEntity<List<FileResponse>> getAllFiles(@RequestHeader("username") String username,
+                                                          @RequestHeader("password") String password) {
+
+        if (!isAdmin(username, password)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        try {
+            // Get the database connection
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/filer", "root", "1234");
+
+            // Prepare the SQL query
+            String sql = "SELECT id, fileName, fileType, directoryID,userID FROM files";
+
+            // Create a statement and execute the query
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+
+            // Create a list to store the files
+            List<FileResponse> files = new ArrayList<>();
+
+            // Iterate over the result
+            while (resultSet.next()) {
+                String id_ = resultSet.getString("id");
+                String fileName = resultSet.getString("fileName");
+                String fileType = resultSet.getString("fileType");
+                int directoryID = resultSet.getInt("directoryID");
+                int userID = resultSet.getInt("userID");
+
+
+                FileResponse file = new FileResponse(id_, fileName, fileType, directoryID, userID);
+                files.add(file);
+            }
+
+            // Clean up resources
+            resultSet.close();
+            statement.close();
+            connection.close();
+
+            // Return the list of groups
+            return ResponseEntity.ok(files);
+        } catch (SQLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    private boolean isAdmin(String username, String password) {
+        return username.equals(ADMIN_USERNAME) && password.equals(ADMIN_PASSWORD);
+    }
+
 }
