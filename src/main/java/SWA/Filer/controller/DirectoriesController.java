@@ -71,4 +71,40 @@ public class DirectoriesController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while deleting Directory: " + e.getMessage());
         }
     }
+    @GetMapping("/listdirectories")
+    public ResponseEntity<List<DirectoriesResponse>> getDirectories() {
+        try {
+            // Get the database connection
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/filer", "root", "1234");
+
+            // Prepare the SQL query
+            String sql = "SELECT id, name FROM directories";
+
+            // Create a statement and execute the query
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+
+            // Create a list to store the users
+            List<DirectoriesResponse> directories = new ArrayList<>();
+
+            // Iterate over the result set and create UserResponse objects
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+
+                DirectoriesResponse directory = new DirectoriesResponse(id, name);
+                directories.add(directory);
+            }
+
+            // Clean up resources
+            resultSet.close();
+            statement.close();
+            connection.close();
+
+            // Return the list of users
+            return ResponseEntity.ok(directories);
+        } catch (SQLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 }
