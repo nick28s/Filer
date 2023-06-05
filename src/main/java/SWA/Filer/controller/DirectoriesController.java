@@ -45,5 +45,30 @@ public class DirectoriesController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while creating a directory: " + e.getMessage());
         }
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteDirectory(@PathVariable("id") int id) {
 
+        try {
+            // Get the database connection
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/filer", "root", "1234");
+
+            // Prepare the SQL query
+            String sql = "DELETE FROM directories WHERE id = ?";
+
+            // Create a prepared statement and set the parameter
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, id);
+
+            // Execute the query
+            statement.executeUpdate();
+
+            // Clean up resources
+            statement.close();
+            connection.close();
+
+            return ResponseEntity.ok("Directory deleted successfully.");
+        } catch (SQLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while deleting Directory: " + e.getMessage());
+        }
+    }
 }
