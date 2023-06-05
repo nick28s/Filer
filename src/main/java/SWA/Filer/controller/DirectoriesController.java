@@ -107,4 +107,31 @@ public class DirectoriesController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateDirectory(@PathVariable("id") int id,
+                                                  @RequestBody DirectoriesRequest directoriesRequest) {
+        try {
+            // Get the database connection
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/filer", "root", "1234");
+
+            // Prepare the SQL query
+            String sql = "UPDATE directories SET name = ? WHERE id = ?";
+
+            // Create a prepared statement and set the parameters
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, directoriesRequest.getName());
+            statement.setInt(2, id);
+
+            // Execute the query
+            statement.executeUpdate();
+
+            // Clean up resources
+            statement.close();
+            connection.close();
+
+            return ResponseEntity.ok("Directory updated successfully.");
+        } catch (SQLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while updating Directory: " + e.getMessage());
+        }
+    }
 }
