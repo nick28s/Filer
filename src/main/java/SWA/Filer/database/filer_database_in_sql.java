@@ -7,7 +7,9 @@ public class filer_database_in_sql {
         `data` longblob,
         `fileName` varchar(255) DEFAULT NULL,
         `fileType` varchar(255) DEFAULT NULL,
+        `directoryID` int DEFAULT NULL,
         PRIMARY KEY (`id`)
+        FOREIGN KEY (directoryID) REFERENCES directories(id)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3
 
         CREATE TABLE `groups` (

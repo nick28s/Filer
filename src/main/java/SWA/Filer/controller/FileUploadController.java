@@ -22,23 +22,22 @@ public class FileUploadController {
     private DatabaseFileService fileStorageService;
 
     @PostMapping("/uploadFile")
-    public Response uploadFile(@RequestParam("file") MultipartFile file) {
-        DatabaseFile fileName = fileStorageService.storeFile(file);
+    public Response uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("directory") int directoryID) {
+        DatabaseFile fileName = fileStorageService.storeFile(file,directoryID);
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/downloadFile/")
                 .path(fileName.getFileName())
                 .toUriString();
 
-        return new Response(fileName.getFileName(), fileDownloadUri,
-                file.getContentType(), file.getSize());
+        return new Response(fileName.getFileName(), fileDownloadUri, file.getContentType(), file.getSize(), directoryID);
     }
 
     @PostMapping("/uploadMultipleFiles")
-    public List<Response> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
+    public List<Response> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files, @RequestParam("directory") int directoryID) {
         return Arrays.asList(files)
                 .stream()
-                .map(file -> uploadFile(file))
+                .map(file -> uploadFile(file,directoryID))
                 .collect(Collectors.toList());
     }
 }
