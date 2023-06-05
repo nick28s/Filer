@@ -7,13 +7,15 @@ public class Response {
     private long size;
 
     private int directoryID;
+    private int userID;
 
-    public Response(String fileName, String fileDownloadUri, String fileType, long size, int directoryID) {
+    public Response(String fileName, String fileDownloadUri, String fileType, long size, int directoryID, int userID) {
         this.fileName = fileName;
         this.fileDownloadUri = fileDownloadUri;
         this.fileType = fileType;
         this.size = size;
         this.directoryID = directoryID;
+        this.userID = userID;
     }
 
     public String getFileName() {
@@ -54,5 +56,13 @@ public class Response {
 
     public void setDirectoryID(int directoryID) {
         this.directoryID = directoryID;
+    }
+
+    public long getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 }

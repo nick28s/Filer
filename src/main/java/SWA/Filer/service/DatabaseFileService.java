@@ -18,16 +18,18 @@ public class DatabaseFileService {
     @Autowired
     private DatabaseFileRepository dbFileRepository;
 
-    public DatabaseFile storeFile(MultipartFile file, int directoryID_) {
+    public DatabaseFile storeFile(MultipartFile file, int directoryID_, int userID_) {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         int directoryID = directoryID_;
+        int userID = userID_;
+
 
         try {
             if (fileName.contains("..")) {
                 throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
             }
 
-            DatabaseFile dbFile = new DatabaseFile(fileName, file.getContentType(), file.getBytes(), directoryID);
+            DatabaseFile dbFile = new DatabaseFile(fileName, file.getContentType(), file.getBytes(), directoryID,userID);
             return dbFileRepository.save(dbFile);
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
