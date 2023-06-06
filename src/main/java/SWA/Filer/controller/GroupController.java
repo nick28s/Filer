@@ -99,7 +99,7 @@ public class GroupController {
     public ResponseEntity<String> updateGroup(@RequestHeader("username") String username,
                                               @RequestHeader("password") String password,
                                               @PathVariable("id") int id,
-                                              @RequestBody GroupModel groupModel) {
+                                              @RequestBody GroupRequest groupRequest) {
         // Check if the user is admin
         if (!isAdmin(username, password)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Only admins can update groups.");
@@ -114,7 +114,7 @@ public class GroupController {
 
             // Create a prepared statement and set the parameters
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, groupModel.getName());
+            statement.setString(1, groupRequest.getName());
             statement.setInt(2, id);
 
             // Execute the query
@@ -234,7 +234,7 @@ public class GroupController {
         }
     }
 
-    private boolean isAdmin(String username, String password) {
+    public boolean isAdmin(String username, String password) {
         return username.equals(ADMIN_USERNAME) && password.equals(ADMIN_PASSWORD);
     }
 }

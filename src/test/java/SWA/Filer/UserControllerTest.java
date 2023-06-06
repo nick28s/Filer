@@ -33,7 +33,7 @@ public class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$[0].username",is("emir")))
-                        .andExpect(jsonPath("$[1].username",is("amir")));
+                        .andExpect(jsonPath("$[1].username",is("John")));
     }
 
     @MockBean

@@ -24,6 +24,8 @@ dependencies {
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	//runtimeOnly 'org.postgresql:postgresql'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.mockito:mockito-core:3.9.0'
+
 	/*testImplementation 'org.springframework.security:spring-security-test'*/
 	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.0'
 	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.0'

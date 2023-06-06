@@ -30,16 +30,16 @@ public class FileControllerTest {
                         .header("password","admin1234")
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$[0].fileName",is("Download.png")))
-                        .andExpect(jsonPath("$[1].fileName",is("decToASCII.png")));
+                        .andExpect(jsonPath("$[0].fileName",is("AdobeStock_249454423-scaled.png")))
+                        .andExpect(jsonPath("$[1].fileName",is("KochrezeptRenamed")));
     }
 
     @Test
     public void getFiles() throws Exception{
-        mvc.perform(get("/files/13/listfiles")//userID 13
+        mvc.perform(get("/files/33/listfiles")//userID 13
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$[0].fileName",is("Download.png")))
-                        .andExpect(jsonPath("$[1].fileName",is("decToASCII.png")));
+                        .andExpect(jsonPath("$[0].fileName",is("AdobeStock_249454423-scaled.png")))
+                        .andExpect(jsonPath("$[1].fileName",is("images.png")));
     }
 }
