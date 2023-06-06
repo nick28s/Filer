@@ -1,6 +1,8 @@
 package SWA.Filer;
 
+import SWA.Filer.controller.DirectoriesController;
 import SWA.Filer.controller.UserController;
+import SWA.Filer.model.DirectoriesRequest;
 import SWA.Filer.model.UserRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -21,68 +23,62 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(UserController.class)
-public class UserControllerTest {
+@WebMvcTest(DirectoriesController.class)
+public class DirectoriesControllerTest {
 
     @Autowired
     private MockMvc mvc;
 
     @Test
-    public void getUsers() throws Exception{
-        mvc.perform(get("/users/listusers")
+    public void getDirectories() throws Exception{
+        mvc.perform(get("/directories/listdirectories")
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$[0].username",is("emir")))
-                        .andExpect(jsonPath("$[1].username",is("amir")));
+                        .andExpect(jsonPath("$[0].name",is("test")))
+                        .andExpect(jsonPath("$[1].name",is("test2")));
     }
 
-    @MockBean
-    private UserRequest userRequest;
+   @MockBean
+    private DirectoriesRequest directoriesRequest;
     @Test
-    public void createUser() throws Exception{
+    public void updateDirectory() throws Exception{
 
-        userRequest = new UserRequest("alex","pass123");
+        directoriesRequest = new DirectoriesRequest("newName");
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-        String requestJson=ow.writeValueAsString(userRequest);
+        String requestJson=ow.writeValueAsString(directoriesRequest);
 
-        mvc.perform(post("/users")
-                        .header("username","admin")
-                        .header("password","admin1234")
+        mvc.perform(put("/directories/16")
                         .content(requestJson)
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk())
-                        .andExpect(content().string("User created successfully."));
+                        .andExpect(content().string("Directory updated successfully."));
     }
 
     @Test
-    public void updateUser() throws Exception{
+    public void createDirectory() throws Exception{
 
-        userRequest = new UserRequest("newname","pass123");
+        directoriesRequest = new DirectoriesRequest("newDirectory");
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-        String requestJson=ow.writeValueAsString(userRequest);
+        String requestJson=ow.writeValueAsString(directoriesRequest);
 
-        mvc.perform(put("/users/22")//userID
-                        .header("username","admin")
-                        .header("password","admin1234")
+        mvc.perform(post("/directories")
                         .content(requestJson)
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk())
-                        .andExpect(content().string("User updated successfully."));
+                        .andExpect(content().string("Directory created successfully."));
     }
 
     @Test
-    public void deleteUser() throws Exception{
-        mvc.perform(delete("/users/26")//userID
-                        .header("username","admin")
-                        .header("password","admin1234")
+    public void deleteDirectory() throws Exception{
+        mvc.perform(delete("/directories/17")//directoryID
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk())
-                        .andExpect(content().string("User deleted successfully."));
+                        .andExpect(content().string("Directory deleted successfully."));
     }
 }
