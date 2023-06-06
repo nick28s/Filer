@@ -1,9 +1,7 @@
 package SWA.Filer;
 
-import SWA.Filer.controller.DirectoriesController;
-import SWA.Filer.controller.UserController;
-import SWA.Filer.model.DirectoriesRequest;
-import SWA.Filer.model.UserRequest;
+import SWA.Filer.controller.GroupController;
+import SWA.Filer.model.GroupRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -23,62 +21,68 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(DirectoriesController.class)
-public class DirectoriesControllerTest {
+@WebMvcTest(GroupController.class)
+public class GroupControllerTest {
 
     @Autowired
     private MockMvc mvc;
-
     @Test
-    public void getDirectories() throws Exception{
-        mvc.perform(get("/directories/listdirectories")
+    public void getGroups() throws Exception {
+        mvc.perform(get("/groupp/listgroups")
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$[0].name",is("test")))
-                        .andExpect(jsonPath("$[1].name",is("SchwaebischeRezepte")));
+                        .andExpect(jsonPath("$[1].name",is("TIB")))
+                        .andExpect(jsonPath("$[2].name",is("SWB")));
     }
-
-   @MockBean
-    private DirectoriesRequest directoriesRequest;
+    @MockBean
+    private GroupRequest groupRequest;
     @Test
-    public void updateDirectory() throws Exception{
+    public void createGroup() throws Exception{
 
-        directoriesRequest = new DirectoriesRequest("newName");
+        GroupRequest GroupRequest = new GroupRequest("alex_gruppe");
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-        String requestJson=ow.writeValueAsString(directoriesRequest);
+        String requestJson=ow.writeValueAsString(GroupRequest);
 
-        mvc.perform(put("/directories/16")
+        mvc.perform(post("/groupp")
+                        .header("username","admin")
+                        .header("password","admin1234")
                         .content(requestJson)
                         .contentType(MediaType.APPLICATION_JSON))
-                        .andExpect(status().isOk())
-                        .andExpect(content().string("Directory updated successfully."));
+                .andExpect(status().isOk())
+                .andExpect(content().string("Group created successfully."));
     }
 
     @Test
-    public void createDirectory() throws Exception{
+    public void updateGroup() throws Exception{
 
-        directoriesRequest = new DirectoriesRequest("newDirectory");
+         groupRequest = new GroupRequest("new");
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-        String requestJson=ow.writeValueAsString(directoriesRequest);
+        String requestJson=ow.writeValueAsString(groupRequest);
 
-        mvc.perform(post("/directories")
+        mvc.perform(put("/groupp/28")
+                        .header("username","admin")
+                        .header("password","admin1234")
                         .content(requestJson)
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk())
-                        .andExpect(content().string("Directory created successfully."));
+                        .andExpect(content().string("Group updated successfully."));
     }
 
     @Test
-    public void deleteDirectory() throws Exception{
-        mvc.perform(delete("/directories/30")//directoryID
+    public void deleteGroup() throws Exception{
+        mvc.perform(delete("/groupp/23")//userID
+                        .header("username","admin")
+                        .header("password","admin1234")
                         .contentType(MediaType.APPLICATION_JSON))
-                        .andExpect(status().isOk())
-                        .andExpect(content().string("Directory deleted successfully."));
+                .andExpect(status().isOk())
+                .andExpect(content().string("Group deleted successfully."));
     }
 }
+
+
