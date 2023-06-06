@@ -14,7 +14,7 @@ public class filer_database_in_sql {
         FOREIGN KEY (userID) REFERENCES users(id)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3
 
-        CREATE TABLE `groups` (
+        CREATE TABLE `groupp` (
         `id` int NOT NULL AUTO_INCREMENT,
         `name` varchar(255) NOT NULL,
         PRIMARY KEY (`id`)
@@ -26,7 +26,7 @@ public class filer_database_in_sql {
         PRIMARY KEY (`user_id`,`group_id`),
         KEY `group_id` (`group_id`),
         CONSTRAINT `user_groups_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-        CONSTRAINT `user_groups_ibfk_2` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`)
+        CONSTRAINT `user_groups_ibfk_2` FOREIGN KEY (`group_id`) REFERENCES `groupp` (`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 
         CREATE TABLE `users` (
